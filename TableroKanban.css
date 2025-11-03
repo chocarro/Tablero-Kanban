@@ -1,0 +1,479 @@
+:root {
+    --primary-color: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #8b5cf6;
+    --secondary-color: #10b981;
+    --secondary-dark: #059669;
+    --background-color: #0f172a;
+    --surface-color: #1e293b;
+    --card-color: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #64748b;
+    --border-radius: 16px;
+    --border-radius-sm: 8px;
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    --gradient-secondary: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+    --gradient-bg: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--gradient-bg);
+    color: var(--text-primary);
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 20px;
+    background-attachment: fixed;
+}
+
+/* Glassmorphism effect */
+.glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Header Styles */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px 20px;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+    letter-spacing: -0.025em;
+}
+
+header p {
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
+/* Main Container */
+.kanban-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+/* Column Styles */
+.kanban-column {
+    composes: glass;
+    border-radius: var(--border-radius);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    min-height: 600px;
+    position: relative;
+    overflow: hidden;
+}
+
+.kanban-column::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+    opacity: 0.7;
+}
+
+.kanban-column:nth-child(2)::before {
+    background: var(--gradient-secondary);
+}
+
+.kanban-column:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.column-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    color: var(--text-primary);
+    position: relative;
+}
+
+/* Cards Container */
+.cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 60px;
+    flex-grow: 1;
+    transition: var(--transition);
+}
+
+/* Card Styles */
+.card {
+    background: var(--card-color);
+    border-radius: var(--border-radius-sm);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    position: relative;
+    transition: var(--transition);
+    cursor: grab;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card.dragging {
+    transform: rotate(5deg) scale(1.05);
+    opacity: 0.8;
+    box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+}
+
+.card-text {
+    transition: var(--transition);
+    padding-right: 40px;
+    color: var(--text-primary);
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.card:hover .card-text {
+    padding-right: 50px;
+    transform: translateX(4px);
+}
+
+/* Delete Button */
+.delete-btn {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%) scale(0.9);
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    cursor: pointer;
+    opacity: 0;
+    transition: var(--transition);
+    padding: 8px;
+    border-radius: var(--border-radius-sm);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+}
+
+.card:hover .delete-btn {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+}
+
+.delete-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.4);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Add Card Button */
+.add-card-btn {
+    composes: glass;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    padding: 16px;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    text-align: left;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    margin-top: auto;
+}
+
+.add-card-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.add-card-btn i {
+    transition: var(--transition);
+}
+
+.add-card-btn:hover i {
+    transform: scale(1.2);
+}
+
+/* Add Card Form */
+.add-card-form {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.add-card-form textarea {
+    resize: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-sm);
+    padding: 16px;
+    box-shadow: var(--shadow-inner);
+    font-family: inherit;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    transition: var(--transition);
+    font-size: 14px;
+}
+
+.add-card-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.add-card-form textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.form-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.form-buttons button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.add-form-btn {
+    background: var(--gradient-secondary);
+    color: white;
+    flex: 1;
+}
+
+.add-form-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+}
+
+.cancel-form-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cancel-form-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-2px);
+}
+
+/* Drag and Drop States */
+.column-over {
+    background: rgba(99, 102, 241, 0.05);
+    border: 2px dashed var(--primary-color);
+    transform: scale(1.02);
+}
+
+.column-over::after {
+    content: 'Suelta aquí';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 1.2rem;
+    z-index: 10;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 60px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    padding: 20px;
+    composes: glass;
+    border-radius: var(--border-radius);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .kanban-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    body {
+        padding: 12px;
+    }
+    
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    .kanban-column {
+        min-height: 500px;
+    }
+    
+    .form-buttons {
+        flex-direction: column;
+    }
+    
+    .cancel-form-btn {
+        width: 100%;
+        order: -1;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    header {
+        padding: 20px 12px;
+        margin-bottom: 30px;
+    }
+    
+    .kanban-column {
+        padding: 20px 16px;
+    }
+    
+    .card {
+        padding: 16px;
+    }
+}
+
+/* Loading Animation */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.loading {
+    animation: pulse 2s infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* Focus States for Accessibility */
+button:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    .add-card-btn,
+    .delete-btn,
+    .add-card-form {
+        display: none !important;
+    }
+    
+    .kanban-container {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    
+    .kanban-column {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}

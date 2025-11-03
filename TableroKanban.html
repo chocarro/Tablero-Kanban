@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablero Kanban</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Tablero Kanban</h1>
+        <p>Organiza tus tareas de forma eficiente</p>
+    </header>
+
+    <main class="kanban-container">
+        <section class="kanban-column">
+            <h2 class="column-title">Por hacer</h2>
+            <div class="cards-container" id="todo-column">
+                <article class="card" draggable="true">
+                    <p class="card-text">Revisar documentación del proyecto</p>
+                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                </article>
+                <article class="card" draggable="true">
+                    <p class="card-text">Preparar presentación para la reunión</p>
+                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                </article>
+            </div>
+            <button class="add-card-btn" data-column="todo">
+                <i class="fas fa-plus"></i> Añadir una tarjeta
+            </button>
+            <div class="add-card-form" id="todo-form">
+                <textarea placeholder="Escribe el título de esta tarjeta..." rows="3"></textarea>
+                <div class="form-buttons">
+                    <button class="add-form-btn">Añadir tarjeta</button>
+                    <button class="cancel-form-btn"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="kanban-column">
+            <h2 class="column-title">En progreso</h2>
+            <div class="cards-container" id="doing-column">
+                <article class="card" draggable="true">
+                    <p class="card-text">Desarrollar funcionalidad de arrastrar y soltar</p>
+                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                </article>
+            </div>
+            <button class="add-card-btn" data-column="doing">
+                <i class="fas fa-plus"></i> Añadir una tarjeta
+            </button>
+            <div class="add-card-form" id="doing-form">
+                <textarea placeholder="Escribe el título de esta tarjeta..." rows="3"></textarea>
+                <div class="form-buttons">
+                    <button class="add-form-btn">Añadir tarjeta</button>
+                    <button class="cancel-form-btn"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="kanban-column">
+            <h2 class="column-title">Hecho</h2>
+            <div class="cards-container" id="done-column">
+                <article class="card" draggable="true">
+                    <p class="card-text">Diseñar maqueta del tablero Kanban</p>
+                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                </article>
+                <article class="card" draggable="true">
+                    <p class="card-text">Configurar entorno de desarrollo</p>
+                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                </article>
+            </div>
+            <button class="add-card-btn" data-column="done">
+                <i class="fas fa-plus"></i> Añadir una tarjeta
+            </button>
+            <div class="add-card-form" id="done-form">
+                <textarea placeholder="Escribe el título de esta tarjeta..." rows="3"></textarea>
+                <div class="form-buttons">
+                    <button class="add-form-btn">Añadir tarjeta</button>
+                    <button class="cancel-form-btn"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Departamento de Informática y Comunicaciones - Curso 2025/26</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
